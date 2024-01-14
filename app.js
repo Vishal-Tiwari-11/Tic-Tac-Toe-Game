@@ -6,6 +6,7 @@ let msg = document.querySelector("#msg")
 
 
 let turnO = true; //playeX, playerO
+count = 0;
 
 const winningEvent= [
     [0,1,2],
@@ -21,6 +22,7 @@ const winningEvent= [
 
 const resetGame=()=>{
     turnO=true;
+    count=0;
     enableBoxes();
     msgContainer.classList.add("hide")
 }
@@ -38,10 +40,21 @@ boxes.forEach((box) =>{
             turnO=true
         }
         box.disabled=true;
+        count ++;
 
-        checkWinner();
+        let isWinner = checkWinner();
+        if(count===9 && !isWinner) {
+            gameDraw();
+        }
     })
 })
+
+const gameDraw= () =>{
+        msg.innerText=`Match Draw !! `;
+        msgContainer.classList.remove("hide"); 
+        disableBoxes();
+    }
+
 const disableBoxes= ()=>{
     for(let box of boxes){
         box.disabled=true
@@ -72,6 +85,7 @@ for(let pattern of winningEvent){
         if (pos1===pos2 && pos2===pos3){
            
             showWinner(pos1);
+            return true;
            
 
         }
